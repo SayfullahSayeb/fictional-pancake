@@ -185,7 +185,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-let D=null,currentKapitel=1,vocabIndex=0,vocabWords=[],dailyIdx=0;
+let D=null,currentKapitel=1,vocabIndex=0,vocabWords=[],dailyIdx=0,dailyWords=[];
 
 async function init(){
     try{const r=await fetch('data.json');D=await r.json();}catch(e){D={};}
@@ -304,7 +304,7 @@ function renderListening(horen){
                 if(qi.options)qi.options.forEach(opt=>{q+=`<div class="hoeren-opt" onclick="this.classList.toggle('selected')"><div class="radio"></div><div style="font-size:14px">${esc(opt)}</div></div>`;});
                 q+=`<div style="color:var(--green);font-size:11px;font-weight:600;margin-top:4px">Answer: ${qi.answer||''}</div></div>`;
             });
-            h+=`<div class="card" style="margin-bottom:12px;padding:16px"><div style="font-weight:600;font-size:13px;margin-bottom:8px">${test.name||tk}</div>${test.audioUrl?`<div class="hoeren-player"><div class="hoeren-visual"><i class="fas fa-play"></i></div><a href="${test.audioUrl}" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> Audio</a></div>`:''}${q}</div>`;
+            h+=`<div class="card" style="margin-bottom:12px;padding:16px"><div style="font-weight:600;font-size:13px;margin-bottom:8px">${test.name||tk}</div>${test.audioUrl?`<audio controls style="width:100%;height:36px;margin-bottom:8px" src="${test.audioUrl}"></audio>`:''}${q}</div>`;
         });
     });
     document.getElementById('listenContent').innerHTML=h||'<div style="padding:20px;text-align:center;color:var(--ts)">No data</div>';
@@ -327,19 +327,20 @@ function renderWriting(sch){
 }
 
 // DAILY WORD
+let dailyWords=[];
 function renderDaily(){
     const tw=D?.TodayWord||{};
     const dates=Object.keys(tw).sort((a,b)=>{const[d1,m1,y1]=a.split('-').map(Number);const[d2,m2,y2]=b.split('-').map(Number);return(y2*10000+m2*100+d2)-(y1*10000+m1*100+d1);});
     const today=dates[0];
-    const words=tw[today]||[];
-    if(!words.length){document.getElementById('dailyContent').innerHTML='<div style="padding:20px;text-align:center;color:var(--ts)">No daily words</div>';return;}
+    dailyWords=tw[today]||[];
+    if(!dailyWords.length){document.getElementById('dailyContent').innerHTML='<div style="padding:20px;text-align:center;color:var(--ts)">No daily words</div>';return;}
     dailyIdx=0;
-    function renderWord(){
-        if(dailyIdx>=words.length){document.getElementById('dailyContent').innerHTML=`<div class="flashcard-area fade-in"><div style="font-size:60px;margin-bottom:16px">&#x1F31F;</div><h3 style="font-size:20px;font-weight:700;margin-bottom:8px">Fertig!</h3><p style="color:var(--ts)">${words.length} Wörter gesehen</p></div>`;return;}
-        const w=words[dailyIdx];
-        document.getElementById('dailyContent').innerHTML=`<div class="daily-card fade-in"><div class="daily-num">${dailyIdx+1} / ${words.length}</div><div class="daily-word">${esc(w.wort||'')}</div><div class="daily-bn">${esc(w.details||'').split('\\n')[0]||''}</div><div class="daily-example"><div style="font-size:13px;color:#475569;white-space:pre-line">${esc(w.details||'')}</div></div><div class="daily-nav"><button class="btn btn-outline btn-sm" onclick="if(dailyIdx>0){dailyIdx--;renderWord();}"><i class="fas fa-arrow-left"></i></button><button class="btn btn-primary btn-sm" onclick="dailyIdx++;renderWord();">Nächstes <i class="fas fa-arrow-right"></i></button></div></div>`;
-    }
     renderWord();
+}
+function renderWord(){
+    if(dailyIdx>=dailyWords.length){document.getElementById('dailyContent').innerHTML=`<div class="flashcard-area fade-in"><div style="font-size:60px;margin-bottom:16px">&#x1F31F;</div><h3 style="font-size:20px;font-weight:700;margin-bottom:8px">Fertig!</h3><p style="color:var(--ts)">${dailyWords.length} Wörter gesehen</p></div>`;return;}
+    const w=dailyWords[dailyIdx];
+    document.getElementById('dailyContent').innerHTML=`<div class="daily-card fade-in"><div class="daily-num">${dailyIdx+1} / ${dailyWords.length}</div><div class="daily-word">${esc(w.wort||'')}</div><div class="daily-bn">${esc(w.details||'').split('\\n')[0]||''}</div><div class="daily-example"><div style="font-size:13px;color:#475569;white-space:pre-line">${esc(w.details||'')}</div></div><div class="daily-nav"><button class="btn btn-outline btn-sm" onclick="if(dailyIdx>0){dailyIdx--;renderWord();}"><i class="fas fa-arrow-left"></i></button><button class="btn btn-primary btn-sm" onclick="dailyIdx++;renderWord();">Nächstes <i class="fas fa-arrow-right"></i></button></div></div>`;
 }
 
 // A2
