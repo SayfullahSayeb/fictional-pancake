@@ -7,538 +7,177 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-        :root{
-            --blue:#1e3a5f;--blue-l:#2d5a8e;--blue-xl:#3b7dd8;
-            --yellow:#f0b429;--yellow-l:#f7d070;
-            --red:#dc3545;--green:#28a745;--green-l:#d4edda;
-            --bg:#f5f6fa;--card:#fff;--t:#1a1a2e;--ts:#6b7280;--tss:#9ca3af;
-            --b:#e5e7eb;--b2:#d1d5db;
-            --r:12px;--r2:16px;--r3:20px;
-            --shadow:0 2px 12px rgba(0,0,0,.08);
-            --shadow2:0 8px 30px rgba(0,0,0,.12);
-        }
-        html{scroll-behavior:smooth}
-        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:80px;overflow-x:hidden}
-
-        /* ===== DESIGN SYSTEM ===== */
-        .screen{display:none;min-height:100vh;padding:0 16px 100px}
-        .screen.active{display:block}
-
+        :root{--blue:#1e3a5f;--blue-l:#2d5a8e;--blue-xl:#3b7dd8;--yellow:#f0b429;--red:#dc3545;--green:#28a745;--green-l:#d4edda;--bg:#f5f6fa;--card:#fff;--t:#1a1a2e;--ts:#6b7280;--b:#e5e7eb;--b2:#d1d5db;--r:12px;--r2:16px;--shadow:0 2px 12px rgba(0,0,0,.08)}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding-bottom:80px}
+        .screen{display:none;padding:0 16px 100px}.screen.active{display:block}
         .top-header{background:var(--blue);color:#fff;padding:16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
         .top-header h1{font-size:17px;font-weight:700}
         .top-header .icon-btn{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-
-        .btn{padding:12px 24px;border-radius:var(--r);border:none;font-size:14px;font-weight:600;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:8px}
-        .btn:active{transform:scale(.96)}
-        .btn-primary{background:var(--blue);color:#fff}
-        .btn-yellow{background:var(--yellow);color:var(--t)}
-        .btn-outline{background:transparent;border:2px solid var(--b2);color:var(--t)}
-        .btn-sm{padding:8px 16px;font-size:12px;border-radius:8px}
-        .btn-full{width:100%;justify-content:center}
-
-        .progress-bar{width:100%;height:10px;background:var(--b);border-radius:5px;overflow:hidden;position:relative}
-        .progress-fill{height:100%;border-radius:5px;transition:width .5s ease}
-        .progress-fill.blue{background:var(--blue-xl)}
-        .progress-fill.green{background:var(--green)}
-        .progress-fill.yellow{background:var(--yellow)}
-        .progress-fill.red{background:var(--red)}
-        .progress-text{font-size:12px;color:var(--ts);margin-top:4px;text-align:right}
-
+        .btn{padding:12px 24px;border-radius:var(--r);border:none;font-size:14px;font-weight:600;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:8px}.btn:active{transform:scale(.96)}
+        .btn-primary{background:var(--blue);color:#fff}.btn-yellow{background:var(--yellow);color:var(--t)}.btn-outline{background:transparent;border:2px solid var(--b2);color:var(--t)}.btn-sm{padding:8px 16px;font-size:12px;border-radius:8px}.btn-full{width:100%;justify-content:center}
         .card{background:var(--card);border-radius:var(--r2);box-shadow:var(--shadow);overflow:hidden}
-
-        .tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600}
-
         .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--b);display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 10px rgba(0,0,0,.05)}
-        .nav-item{flex:1;padding:10px 4px 8px;text-align:center;cursor:pointer;transition:.15s;color:var(--tss)}
-        .nav-item.active{color:var(--blue)}
-        .nav-item i{font-size:20px;display:block;margin-bottom:2px}
-        .nav-item span{font-size:10px;font-weight:600}
-
+        .nav-item{flex:1;padding:10px 4px 8px;text-align:center;cursor:pointer;color:var(--ts)}.nav-item.active{color:var(--blue)}.nav-item i{font-size:20px;display:block;margin-bottom:2px}.nav-item span{font-size:10px;font-weight:600}
         .section-title{font-size:16px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
-        .section-title .see-all{font-size:13px;color:var(--blue);font-weight:600;cursor:pointer}
-
-        /* ===== HOME SCREEN ===== */
-        .home-greeting{padding:20px 0 4px}
-        .home-greeting h2{font-size:22px;font-weight:700}
-        .home-greeting p{font-size:13px;color:var(--ts);margin-top:2px}
-
-        .stats-row{display:flex;gap:10px;margin:14px 0}
-        .stat-card{flex:1;background:var(--card);border-radius:var(--r);padding:12px;text-align:center;box-shadow:var(--shadow)}
-        .stat-card .val{font-size:20px;font-weight:700;color:var(--blue)}
-        .stat-card .lbl{font-size:11px;color:var(--ts);margin-top:2px}
-        .stat-card.fire .val{color:var(--red)}
-
-        .today-card{background:linear-gradient(135deg,var(--blue),var(--blue-l));color:#fff;border-radius:var(--r2);padding:20px;margin:16px 0;position:relative;overflow:hidden}
-        .today-card::after{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;background:rgba(255,255,255,.08);border-radius:50%}
-        .today-card .label{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.7}
-        .today-card .topic{font-size:18px;font-weight:700;margin:6px 0 4px}
-        .today-card .topic-bn{font-size:13px;opacity:.8}
-        .today-card .prog{margin:14px 0}
-        .today-card .prog .progress-bar{background:rgba(255,255,255,.2)}
-        .today-card .prog .progress-fill{background:var(--yellow)}
-        .today-card .btn{background:var(--yellow);color:var(--t);margin-top:4px}
-
-        .continue-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
-        .continue-item{background:var(--card);border-radius:var(--r2);padding:16px;box-shadow:var(--shadow);cursor:pointer;transition:.15s}
-        .continue-item:active{transform:scale(.97)}
-        .continue-item .ci-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;margin-bottom:10px}
-        .continue-item .ci-title{font-size:14px;font-weight:600}
-        .continue-item .ci-count{font-size:12px;color:var(--ts);margin-top:2px}
-        .continue-item .ci-prog{margin-top:8px}
-
-        .pruefung-card{background:var(--card);border-radius:var(--r2);padding:16px;box-shadow:var(--shadow);margin:16px 0}
-        .pruefung-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--b)}
-        .pruefung-item:last-child{border-bottom:none}
-        .pruefung-item .pi-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px}
-        .pruefung-item .pi-info{flex:1}
-        .pruefung-item .pi-title{font-size:13px;font-weight:600}
-        .pruefung-item .pi-prog{margin-top:4px}
-
-        /* ===== LEVEL SCREEN ===== */
-        .level-card{background:var(--card);border-radius:var(--r2);padding:20px;margin:12px 0;box-shadow:var(--shadow);cursor:pointer;transition:.15s;position:relative;overflow:hidden}
-        .level-card:active{transform:scale(.98)}
-        .level-card::before{content:'';position:absolute;right:-30px;top:-30px;width:80px;height:80px;border-radius:50%;opacity:.1}
-        .level-card.a1::before{background:var(--blue)}
-        .level-card.a2::before{background:var(--green)}
-        .level-card.b1::before{background:var(--yellow)}
-        .level-card .lc-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-        .level-card .lc-flag{font-size:28px}
-        .level-card .lc-level{font-size:20px;font-weight:700}
-        .level-card .lc-name{font-size:13px;color:var(--ts)}
-        .level-card .lc-prog{margin:12px 0}
-        .level-card .lc-meta{font-size:12px;color:var(--ts);display:flex;gap:12px}
-        .level-card .lc-meta span{display:flex;align-items:center;gap:4px}
-
-        /* ===== LEARNING PATH ===== */
-        .path-header{padding:20px 0;text-align:center}
-        .path-header h2{font-size:22px;font-weight:700}
-        .path-header p{font-size:13px;color:var(--ts);margin-top:4px}
-
-        .path-container{position:relative;padding:20px 0}
-        .path-node{display:flex;align-items:center;gap:16px;margin-bottom:24px;position:relative}
-        .path-node.locked{opacity:.5}
-        .path-connector{position:absolute;left:24px;top:50px;width:2px;height:calc(100% + 24px);background:var(--b2)}
-        .path-node:last-child .path-connector{display:none}
-
-        .path-circle{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;flex-shrink:0;position:relative;z-index:2;cursor:pointer;transition:.15s}
-        .path-circle:active{transform:scale(.9)}
-        .path-circle.blue{background:var(--blue)}
-        .path-circle.green{background:var(--green)}
-        .path-circle.yellow{background:var(--yellow)}
-        .path-circle.locked{background:var(--b2)}
-        .path-circle .check{position:absolute;top:-4px;right:-4px;width:18px;height:18px;background:var(--green);border-radius:50%;border:2px solid #fff;font-size:9px;display:flex;align-items:center;justify-content:center;color:#fff}
-
-        .path-info{flex:1}
-        .path-info h3{font-size:15px;font-weight:700}
-        .path-info p{font-size:12px;color:var(--ts);margin-top:2px}
-        .path-info .path-prog{margin-top:6px}
-
-        /* ===== CHAPTER SCREEN ===== */
-        .ch-header{padding:20px 0;text-align:center}
-        .ch-header h2{font-size:20px;font-weight:700}
-        .ch-header p{font-size:13px;color:var(--ts);margin-top:4px}
-        .ch-header .ch-prog{margin:12px 0;max-width:300px;margin-left:auto;margin-right:auto}
-
-        .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
-        .mode-item{background:var(--card);border-radius:var(--r2);padding:16px;box-shadow:var(--shadow);cursor:pointer;transition:.15s;text-align:center}
-        .mode-item:active{transform:scale(.96)}
-        .mode-item .mi-icon{font-size:28px;margin-bottom:8px}
-        .mode-item .mi-title{font-size:14px;font-weight:600}
-        .mode-item .mi-count{font-size:12px;color:var(--ts);margin-top:2px}
-        .mode-item .mi-check{color:var(--green);font-size:14px;margin-top:4px}
-
-        /* ===== VOCAB FLASHCARD ===== */
-        .flashcard-area{padding:20px 0;text-align:center}
-        .flashcard{width:100%;max-width:340px;min-height:300px;background:var(--card);border-radius:var(--r3);box-shadow:var(--shadow2);margin:0 auto;perspective:1000px;cursor:pointer;position:relative}
-        .flashcard-inner{width:100%;min-height:300px;padding:30px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform .4s}
-        .flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
-        .fc-de{font-size:28px;font-weight:700;margin-bottom:8px}
-        .fc-type{font-size:12px;color:var(--ts);margin-bottom:16px}
-        .fc-bn{font-size:20px;color:var(--blue);font-weight:600;margin-top:8px}
-        .fc-en{font-size:14px;color:var(--ts);margin-top:4px}
-        .fc-example{font-size:13px;color:#475569;margin-top:16px;padding:12px;background:var(--bg);border-radius:8px;line-height:1.6}
-        .fc-counter{margin-top:16px;font-size:13px;color:var(--ts)}
-        .fc-actions{display:flex;gap:12px;margin-top:16px;justify-content:center}
-        .fc-btn{width:56px;height:56px;border-radius:50%;border:none;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
-        .fc-btn:active{transform:scale(.9)}
-        .fc-btn.hard{background:#fee2e2;color:var(--red)}
-        .fc-btn.good{background:var(--green-l);color:var(--green)}
-        .fc-btn.easy{background:#dbeafe;color:var(--blue)}
-
-        .flashcard-done{text-align:center;padding:40px 20px}
-        .flashcard-done .big-icon{font-size:60px;margin-bottom:16px}
-        .flashcard-done h3{font-size:20px;font-weight:700;margin-bottom:8px}
-        .flashcard-done p{font-size:14px;color:var(--ts)}
-
-        /* ===== SPEAKING CHAT ===== */
-        .chat-area{padding:16px 0}
-        .chat-msg{display:flex;gap:10px;margin-bottom:16px}
-        .chat-msg.teacher{flex-direction:row}
-        .chat-msg.user{flex-direction:row-reverse}
-        .chat-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-        .chat-avatar.t{background:var(--blue);color:#fff}
-        .chat-avatar.u{background:var(--yellow);color:var(--t)}
-        .chat-bubble{max-width:80%;padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.6}
-        .chat-msg.teacher .chat-bubble{background:var(--card);box-shadow:var(--shadow);border-bottom-left-radius:4px}
-        .chat-msg.user .chat-bubble{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
-        .chat-bn{font-size:12px;color:var(--ts);margin-top:4px}
-        .chat-msg.user .chat-bn{color:rgba(255,255,255,.7)}
-        .chat-audio{margin-top:6px;cursor:pointer;color:var(--blue)}
-        .chat-msg.user .chat-audio{color:var(--yellow)}
-
-        /* ===== HOEREN ===== */
-        .hoeren-player{text-align:center;padding:24px 0}
-        .hoeren-visual{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-l));margin:0 auto 20px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:36px;box-shadow:0 8px 30px rgba(30,58,95,.3)}
-        .hoeren-progress{max-width:300px;margin:0 auto 12px}
-        .hoeren-time{font-size:13px;color:var(--ts)}
-        .hoeren-options{margin:20px 0}
-        .hoeren-opt{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--card);border-radius:var(--r);margin-bottom:8px;box-shadow:var(--shadow);cursor:pointer;transition:.15s;border:2px solid transparent}
-        .hoeren-opt:active{transform:scale(.98)}
-        .hoeren-opt.selected{border-color:var(--blue)}
-        .hoeren-opt.correct{border-color:var(--green);background:var(--green-l)}
-        .hoeren-opt.wrong{border-color:var(--red);background:#fee2e2}
-        .hoeren-opt .radio{width:22px;height:22px;border-radius:50%;border:2px solid var(--b2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-        .hoeren-opt.selected .radio{border-color:var(--blue);background:var(--blue);color:#fff}
-        .hoeren-opt .opt-text{font-size:14px}
-
-        /* ===== SCHREIBEN ===== */
-        .schreiben-area{padding:16px 0}
-        .sch-prompt{background:var(--card);border-radius:var(--r2);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
-        .sch-prompt h3{font-size:15px;font-weight:700;margin-bottom:8px}
-        .sch-prompt p{font-size:13px;color:#475569;line-height:1.6;white-space:pre-line}
-        .sch-textarea{width:100%;min-height:150px;border:2px solid var(--b2);border-radius:var(--r);padding:14px;font-size:14px;font-family:inherit;resize:vertical;outline:none;line-height:1.6}
-        .sch-textarea:focus{border-color:var(--blue)}
-        .sch-counter{font-size:12px;color:var(--ts);text-align:right;margin-top:4px}
-        .sch-checklist{margin:16px 0}
-        .sch-check{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:13px}
-        .sch-check i{font-size:14px}
-        .sch-check.done{color:var(--green)}
-        .sch-check.pending{color:var(--ts)}
-
-        /* ===== GRAMMAR ===== */
-        .grammar-lesson{padding:16px 0}
-        .gram-section{background:var(--card);border-radius:var(--r2);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}
-        .gram-section h3{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--blue)}
-        .gram-section p{font-size:13px;color:#475569;line-height:1.7;white-space:pre-line}
-        .gram-example{background:var(--bg);padding:12px;border-radius:8px;margin-top:8px;font-size:13px}
-        .gram-bn{font-size:12px;color:var(--ts);margin-top:4px}
-
-        /* ===== DAILY WORD ===== */
-        .daily-card{text-align:center;padding:20px 0}
-        .daily-num{font-size:12px;color:var(--ts);margin-bottom:12px}
-        .daily-word{font-size:32px;font-weight:700;margin-bottom:4px}
-        .daily-type{font-size:12px;color:var(--ts);margin-bottom:12px}
-        .daily-bn{font-size:18px;color:var(--blue);font-weight:600;margin-bottom:4px}
-        .daily-en{font-size:14px;color:var(--ts);margin-bottom:16px}
-        .daily-example{background:var(--card);border-radius:var(--r2);padding:16px;box-shadow:var(--shadow);margin:16px 0;text-align:left}
-        .daily-example .de{font-size:14px;font-weight:500;margin-bottom:4px}
-        .daily-example .bn{font-size:13px;color:var(--ts)}
-        .daily-nav{display:flex;gap:12px;justify-content:center;margin-top:16px}
-        .daily-progress{margin-top:16px}
-
-        /* ===== PROFILE ===== */
-        .profile-header{text-align:center;padding:20px 0}
-        .profile-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-l));margin:0 auto 12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:700}
-        .profile-name{font-size:20px;font-weight:700}
-        .profile-level{font-size:13px;color:var(--ts);margin-top:2px}
-
-        .profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
-        .ps-item{background:var(--card);border-radius:var(--r);padding:14px;text-align:center;box-shadow:var(--shadow)}
-        .ps-item .ps-val{font-size:22px;font-weight:700;color:var(--blue)}
-        .ps-item .ps-lbl{font-size:11px;color:var(--ts);margin-top:2px}
-
-        .weak-section{margin:16px 0}
-        .weak-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--card);border-radius:var(--r);margin-bottom:8px;box-shadow:var(--shadow)}
-        .weak-item .wi-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
-        .weak-item .wi-info{flex:1}
-        .weak-item .wi-title{font-size:13px;font-weight:600}
-        .weak-item .wi-status{font-size:11px;margin-top:2px}
-        .wi-status.warn{color:var(--red)}.wi-status.ok{color:var(--green)}
-
-        /* ===== SEARCH ===== */
-        .search-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:none;flex-direction:column}
-        .search-overlay.show{display:flex}
-        .search-header{background:var(--card);padding:12px 16px;display:flex;align-items:center;gap:10px}
-        .search-header input{flex:1;border:none;outline:none;font-size:16px;background:transparent}
-        .search-header .close-btn{background:none;border:none;font-size:20px;cursor:pointer;color:var(--ts)}
-        .search-body{flex:1;overflow-y:auto;background:var(--card);padding:8px 0}
-        .search-body .sr-item{padding:12px 16px;border-bottom:1px solid var(--b);cursor:pointer}
-        .search-body .sr-item:active{background:#f8fafc}
-        .sr-title{font-size:14px;font-weight:600}
-        .sr-sub{font-size:12px;color:var(--ts);margin-top:2px}
-        .sr-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;margin-right:6px}
-
-        /* ===== TOAST ===== */
-        .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--t);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:400;opacity:0;transition:.3s;pointer-events:none}
-        .toast.show{opacity:1}
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-        .fade-in{animation:fadeIn .3s ease}
-        @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-        .pulse{animation:pulse 2s infinite}
-
+        .home-greeting{padding:20px 0 4px}.home-greeting h2{font-size:22px;font-weight:700}.home-greeting p{font-size:13px;color:var(--ts);margin-top:2px}
+        .stats-row{display:flex;gap:10px;margin:14px 0}.stat-card{flex:1;background:var(--card);border-radius:var(--r);padding:12px;text-align:center;box-shadow:var(--shadow)}.stat-card .val{font-size:20px;font-weight:700;color:var(--blue)}.stat-card .lbl{font-size:11px;color:var(--ts);margin-top:2px}
+        .today-card{background:linear-gradient(135deg,var(--blue),var(--blue-l));color:#fff;border-radius:var(--r2);padding:20px;margin:16px 0;position:relative;overflow:hidden}.today-card::after{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;background:rgba(255,255,255,.08);border-radius:50%}.today-card .label{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.7}.today-card .topic{font-size:18px;font-weight:700;margin:6px 0 4px}.today-card .topic-bn{font-size:13px;opacity:.8}.today-card .btn{background:var(--yellow);color:var(--t);margin-top:12px}
+        .continue-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.continue-item{background:var(--card);border-radius:var(--r2);padding:16px;box-shadow:var(--shadow);cursor:pointer}.continue-item:active{transform:scale(.97)}.continue-item .ci-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;margin-bottom:10px}.continue-item .ci-title{font-size:14px;font-weight:600}.continue-item .ci-count{font-size:12px;color:var(--ts);margin-top:2px}
+        .level-card{background:var(--card);border-radius:var(--r2);padding:20px;margin:12px 0;box-shadow:var(--shadow);cursor:pointer}.level-card:active{transform:scale(.98)}.level-card .lc-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}.level-card .lc-flag{font-size:28px}.level-card .lc-level{font-size:20px;font-weight:700}.level-card .lc-name{font-size:13px;color:var(--ts)}.level-card .lc-meta{font-size:12px;color:var(--ts);display:flex;gap:12px;margin-top:10px}.level-card .lc-meta span{display:flex;align-items:center;gap:4px}
+        .path-container{padding:20px 0}.path-node{display:flex;align-items:center;gap:16px;margin-bottom:24px;cursor:pointer}.path-node:active{transform:scale(.98)}.path-circle{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;flex-shrink:0}.path-circle.blue{background:var(--blue)}.path-circle.green{background:var(--green)}.path-info{flex:1}.path-info h3{font-size:15px;font-weight:700}.path-info p{font-size:12px;color:var(--ts);margin-top:2px}
+        .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.mode-item{background:var(--card);border-radius:var(--r2);padding:16px;box-shadow:var(--shadow);cursor:pointer;text-align:center}.mode-item:active{transform:scale(.96)}.mode-item .mi-icon{font-size:28px;margin-bottom:8px}.mode-item .mi-title{font-size:14px;font-weight:600}.mode-item .mi-count{font-size:12px;color:var(--ts);margin-top:2px}
+        .flashcard-area{padding:20px 0;text-align:center}.flashcard{width:100%;max-width:340px;min-height:280px;background:var(--card);border-radius:var(--r2);box-shadow:0 8px 30px rgba(0,0,0,.12);margin:0 auto;cursor:pointer}.flashcard-inner{width:100%;min-height:280px;padding:30px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform .4s}.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}.fc-de{font-size:28px;font-weight:700;margin-bottom:8px}.fc-type{font-size:12px;color:var(--ts);margin-bottom:16px}.fc-bn{font-size:20px;color:var(--blue);font-weight:600;margin-top:8px}.fc-en{font-size:14px;color:var(--ts);margin-top:4px}.fc-actions{display:flex;gap:12px;margin-top:16px;justify-content:center}.fc-btn{width:56px;height:56px;border-radius:50%;border:none;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}.fc-btn:active{transform:scale(.9)}.fc-btn.hard{background:#fee2e2;color:var(--red)}.fc-btn.good{background:var(--green-l);color:var(--green)}.fc-btn.easy{background:#dbeafe;color:var(--blue)}.fc-counter{margin-bottom:12px;font-size:13px;color:var(--ts)}
+        .chat-msg{display:flex;gap:10px;margin-bottom:16px}.chat-msg.teacher{flex-direction:row}.chat-msg.user{flex-direction:row-reverse}.chat-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}.chat-avatar.t{background:var(--blue);color:#fff}.chat-avatar.u{background:var(--yellow);color:var(--t)}.chat-bubble{max-width:80%;padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.6}.chat-msg.teacher .chat-bubble{background:var(--card);box-shadow:var(--shadow);border-bottom-left-radius:4px}.chat-msg.user .chat-bubble{background:var(--blue);color:#fff;border-bottom-right-radius:4px}.chat-bn{font-size:12px;color:var(--ts);margin-top:4px}.chat-msg.user .chat-bn{color:rgba(255,255,255,.7)}
+        .hoeren-player{text-align:center;padding:24px 0}.hoeren-visual{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-l));margin:0 auto 20px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:36px;box-shadow:0 8px 30px rgba(30,58,95,.3)}
+        .hoeren-opt{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--card);border-radius:var(--r);margin-bottom:8px;box-shadow:var(--shadow);cursor:pointer;border:2px solid transparent}.hoeren-opt.selected{border-color:var(--blue)}.hoeren-opt .radio{width:22px;height:22px;border-radius:50%;border:2px solid var(--b2);display:flex;align-items:center;justify-content:center;flex-shrink:0}.hoeren-opt.selected .radio{border-color:var(--blue);background:var(--blue);color:#fff}
+        .sch-prompt{background:var(--card);border-radius:var(--r2);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}.sch-prompt h3{font-size:15px;font-weight:700;margin-bottom:8px}.sch-prompt p{font-size:13px;color:#475569;line-height:1.6;white-space:pre-line}.sch-textarea{width:100%;min-height:150px;border:2px solid var(--b2);border-radius:var(--r);padding:14px;font-size:14px;font-family:inherit;resize:vertical;outline:none;line-height:1.6}.sch-textarea:focus{border-color:var(--blue)}.sch-counter{font-size:12px;color:var(--ts);text-align:right;margin-top:4px}
+        .gram-section{background:var(--card);border-radius:var(--r2);padding:20px;box-shadow:var(--shadow);margin-bottom:12px}.gram-section h3{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--blue)}.gram-section p{font-size:13px;color:#475569;line-height:1.7;white-space:pre-line}.gram-example{background:var(--bg);padding:12px;border-radius:8px;margin-top:8px;font-size:13px}
+        .daily-card{text-align:center;padding:20px 0}.daily-num{font-size:12px;color:var(--ts);margin-bottom:12px}.daily-word{font-size:32px;font-weight:700;margin-bottom:4px}.daily-bn{font-size:18px;color:var(--blue);font-weight:600;margin-bottom:4px}.daily-example{background:var(--card);border-radius:var(--r2);padding:16px;box-shadow:var(--shadow);margin:16px 0;text-align:left}.daily-nav{display:flex;gap:12px;justify-content:center;margin-top:16px}
+        .profile-header{text-align:center;padding:20px 0}.profile-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-l));margin:0 auto 12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:700}.profile-name{font-size:20px;font-weight:700}
+        .profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.ps-item{background:var(--card);border-radius:var(--r);padding:14px;text-align:center;box-shadow:var(--shadow)}.ps-item .ps-val{font-size:22px;font-weight:700;color:var(--blue)}.ps-item .ps-lbl{font-size:11px;color:var(--ts);margin-top:2px}
+        .weak-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--card);border-radius:var(--r);margin-bottom:8px;box-shadow:var(--shadow)}.weak-item .wi-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}.weak-item .wi-info{flex:1}.weak-item .wi-title{font-size:13px;font-weight:600}.weak-item .wi-status{font-size:11px;margin-top:2px}.wi-status.warn{color:var(--red)}.wi-status.ok{color:var(--green)}
+        .search-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:none;flex-direction:column}.search-overlay.show{display:flex}.search-header{background:var(--card);padding:12px 16px;display:flex;align-items:center;gap:10px}.search-header input{flex:1;border:none;outline:none;font-size:16px;background:transparent}.search-header .close-btn{background:none;border:none;font-size:20px;cursor:pointer;color:var(--ts)}.search-body{flex:1;overflow-y:auto;background:var(--card);padding:8px 0}.sr-item{padding:12px 16px;border-bottom:1px solid var(--b);cursor:pointer}.sr-item:active{background:#f8fafc}.sr-title{font-size:14px;font-weight:600}.sr-sub{font-size:12px;color:var(--ts);margin-top:2px}.sr-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:600;margin-right:6px}
+        .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--t);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:400;opacity:0;transition:.3s;pointer-events:none}.toast.show{opacity:1}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.fade-in{animation:fadeIn .3s ease}
         @media(min-width:768px){.screen{max-width:480px;margin:0 auto}}
     </style>
 </head>
 <body>
 
-<!-- ===== TOP HEADER ===== -->
-<div class="top-header" id="topHeader">
-    <h1 id="headerTitle">Deutsch Bangla</h1>
+<div class="top-header">
+    <h1>Deutsch Bangla</h1>
     <div style="display:flex;gap:8px">
         <button class="icon-btn" onclick="openSearch()"><i class="fas fa-search"></i></button>
-        <button class="icon-btn" onclick="showScreen('notifications')"><i class="fas fa-bell"></i></button>
     </div>
 </div>
 
-<!-- ===== SEARCH OVERLAY ===== -->
 <div class="search-overlay" id="searchOverlay">
     <div class="search-header">
         <i class="fas fa-search" style="color:var(--ts)"></i>
-        <input type="text" id="searchInput" placeholder="Deutsch oder Bangla suchen..." oninput="doSearch(this.value)" autofocus>
+        <input type="text" id="searchInput" placeholder="Deutsch oder Bangla suchen..." oninput="doSearch(this.value)">
         <button class="close-btn" onclick="closeSearch()"><i class="fas fa-times"></i></button>
     </div>
     <div class="search-body" id="searchResults"></div>
 </div>
 
-<!-- ===== SCREENS ===== -->
 <div id="screens">
-
     <!-- HOME -->
     <div class="screen active" id="scr-home">
         <div class="home-greeting">
-            <h2>Hallo, Learner <span style="font-size:20px">&#x1F44B;</span></h2>
-            <p>Deutsch A1 &bull; Kapitel 3</p>
+            <h2>Hallo! <span>&#x1F44B;</span></h2>
+            <p>Deutsch Bangla &bull; Everything unlocked</p>
         </div>
-
         <div class="stats-row">
-            <div class="stat-card fire"><div class="val">&#x1F525; 7</div><div class="lbl">Streak</div></div>
-            <div class="stat-card"><div class="val">1,240</div><div class="lbl">XP</div></div>
-            <div class="stat-card"><div class="val">78%</div><div class="lbl">A1</div></div>
+            <div class="stat-card"><div class="val">A1</div><div class="lbl">12 Kapitel</div></div>
+            <div class="stat-card"><div class="val">A2</div><div class="lbl">12 Kapitel</div></div>
+            <div class="stat-card"><div class="val">B1</div><div class="lbl">2 Kapitel</div></div>
         </div>
-
         <div class="today-card">
-            <div class="label">&#x1F4DA; Today's Lesson</div>
-            <div class="topic">&#x1F1E9;&#x1F1EA; Kapitel 3 &mdash; Familie</div>
-            <div class="topic-bn">&#x09AA;&#x09B0;&#x09BF;&#x09B5;&#x09BE;&#x09B0;</div>
-            <div class="prog">
-                <div class="progress-bar"><div class="progress-fill yellow" style="width:65%"></div></div>
-                <div class="progress-text" style="color:rgba(255,255,255,.7)">65% abgeschlossen</div>
-            </div>
-            <button class="btn btn-yellow btn-full" onclick="openChapter(3)"><i class="fas fa-play"></i> Weiterlernen</button>
+            <div class="label">Start learning</div>
+            <div class="topic">&#x1F1E9;&#x1F1EA; A1 Netzwerk neu</div>
+            <div class="topic-bn">1,963 Wörter &bull; 161 Verben &bull; 30 Dialogues</div>
+            <button class="btn btn-yellow" onclick="showScreen('a1-path')"><i class="fas fa-play"></i> Loslegen</button>
         </div>
-
-        <div class="section-title">Continue learning <span class="see-all" onclick="showScreen('lernen')">Alle</span></div>
         <div class="continue-grid">
             <div class="continue-item" onclick="openMode('vocab')">
                 <div class="ci-icon" style="background:linear-gradient(135deg,#3b82f6,#2563eb)"><i class="fas fa-book"></i></div>
                 <div class="ci-title">Wörter</div>
-                <div class="ci-count">12 today</div>
-                <div class="ci-prog"><div class="progress-bar"><div class="progress-fill blue" style="width:80%"></div></div></div>
+                <div class="ci-count">Flashcards</div>
             </div>
             <div class="continue-item" onclick="openMode('speak')">
                 <div class="ci-icon" style="background:linear-gradient(135deg,#34d399,#10b981)"><i class="fas fa-comments"></i></div>
                 <div class="ci-title">Sprechen</div>
-                <div class="ci-count">8 today</div>
-                <div class="ci-prog"><div class="progress-bar"><div class="progress-fill green" style="width:55%"></div></div></div>
+                <div class="ci-count">30 Dialogues</div>
             </div>
             <div class="continue-item" onclick="openMode('listen')">
                 <div class="ci-icon" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)"><i class="fas fa-headphones"></i></div>
                 <div class="ci-title">Hören</div>
-                <div class="ci-count">5 today</div>
-                <div class="ci-prog"><div class="progress-bar"><div class="progress-fill yellow" style="width:40%"></div></div></div>
+                <div class="ci-count">Audio Tests</div>
             </div>
             <div class="continue-item" onclick="openMode('write')">
                 <div class="ci-icon" style="background:linear-gradient(135deg,#f87171,#ef4444)"><i class="fas fa-pen-fancy"></i></div>
                 <div class="ci-title">Schreiben</div>
-                <div class="ci-count">3 today</div>
-                <div class="ci-prog"><div class="progress-bar"><div class="progress-fill red" style="width:25%"></div></div></div>
+                <div class="ci-count">55 Exercises</div>
             </div>
         </div>
-
-        <div class="section-title">Prüfung vorbereiten</div>
-        <div class="pruefung-card">
-            <div class="pruefung-item" onclick="openPruefung('a1')">
-                <div class="pi-icon" style="background:#dbeafe;color:var(--blue)"><i class="fas fa-headphones"></i></div>
-                <div class="pi-info"><div class="pi-title">&#x1F3AF; A1 Hören</div><div class="pi-prog"><div class="progress-bar"><div class="progress-fill blue" style="width:80%"></div></div></div></div>
-            </div>
-            <div class="pruefung-item" onclick="openMode('grammar')">
-                <div class="pi-icon" style="background:#d1fae5;color:var(--green)"><i class="fas fa-shapes"></i></div>
-                <div class="pi-info"><div class="pi-title">&#x1F3AF; Grammatik</div><div class="pi-prog"><div class="progress-bar"><div class="progress-fill green" style="width:65%"></div></div></div></div>
-            </div>
+        <div class="section-title">Levels</div>
+        <div class="level-card" onclick="showScreen('a1-path')">
+            <div class="lc-head"><div class="lc-flag">&#x1F1E9;&#x1F1EA;</div><div><div class="lc-level">A1</div><div class="lc-name">Anfänger</div></div></div>
+            <div class="lc-meta"><span><i class="fas fa-book"></i> 12 Kapitel</span><span><i class="fas fa-bolt"></i> 161 Verben</span></div>
         </div>
-    </div>
-
-    <!-- LERNEN (Levels) -->
-    <div class="screen" id="scr-lernen">
-        <div style="padding:20px 0"><h2 style="font-size:22px;font-weight:700">&#x1F4DA; Deutsch lernen</h2><p style="font-size:13px;color:var(--ts);margin-top:4px">Wähle dein Niveau</p></div>
-
-        <div class="level-card a1" onclick="showScreen('a1-path')">
-            <div class="lc-head"><div class="lc-flag">&#x1F1E9;&#x1F1EA;</div><div><div class="lc-level">A1</div><div class="lc-name">Anfänger &bull; Beginner</div></div></div>
-            <div class="lc-prog"><div class="progress-bar"><div class="progress-fill blue" style="width:78%"></div></div><div class="progress-text">78% abgeschlossen</div></div>
-            <div class="lc-meta"><span><i class="fas fa-book"></i> 12 Kapitel</span><span><i class="fas fa-list"></i> 1,963 Wörter</span><span><i class="fas fa-bolt"></i> 161 Verben</span></div>
+        <div class="level-card" onclick="showScreen('a2-screen')">
+            <div class="lc-head"><div class="lc-flag">&#x1F1E9;&#x1F1EA;</div><div><div class="lc-level">A2</div><div class="lc-name">Grundstufe</div></div></div>
+            <div class="lc-meta"><span><i class="fas fa-book"></i> 12 Kapitel</span></div>
         </div>
-
-        <div class="level-card a2" onclick="showScreen('a2-screen')">
-            <div class="lc-head"><div class="lc-flag">&#x1F1E9;&#x1F1EA;</div><div><div class="lc-level">A2</div><div class="lc-name">Grundstufe &bull; Elementary</div></div></div>
-            <div class="lc-prog"><div class="progress-bar"><div class="progress-fill green" style="width:42%"></div></div><div class="progress-text">42% abgeschlossen</div></div>
-            <div class="lc-meta"><span><i class="fas fa-book"></i> 12 Kapitel</span><span><i class="fas fa-list"></i> Wörter</span></div>
-        </div>
-
-        <div class="level-card b1" onclick="showScreen('b1-screen')">
-            <div class="lc-head"><div class="lc-flag">&#x1F1E9;&#x1F1EA;</div><div><div class="lc-level">B1</div><div class="lc-name">Mittelstufe &bull; Intermediate</div></div></div>
-            <div class="lc-prog"><div class="progress-bar"><div class="progress-fill yellow" style="width:18%"></div></div><div class="progress-text">18% abgeschlossen</div></div>
+        <div class="level-card" onclick="showScreen('b1-screen')">
+            <div class="lc-head"><div class="lc-flag">&#x1F1E9;&#x1F1EA;</div><div><div class="lc-level">B1</div><div class="lc-name">Mittelstufe</div></div></div>
             <div class="lc-meta"><span><i class="fas fa-book"></i> 2 Kapitel</span><span><i class="fas fa-list"></i> 307 Wörter</span></div>
         </div>
     </div>
 
-    <!-- A1 LEARNING PATH -->
+    <!-- A1 PATH -->
     <div class="screen" id="scr-a1-path">
-        <div class="path-header">
-            <h2>&#x1F1E9;&#x1F1EA; A1 Netzwerk</h2>
-            <p>Anfänger &bull; 12 Kapitel &bull; 1,963 Wörter</p>
-        </div>
-        <div class="progress-bar" style="margin-bottom:20px"><div class="progress-fill blue" style="width:78%"></div></div>
+        <div style="padding:20px 0"><h2 style="font-size:22px;font-weight:700">&#x1F1E9;&#x1F1EA; A1 Netzwerk</h2><p style="font-size:13px;color:var(--ts);margin-top:4px">12 Kapitel &bull; Tap any to open</p></div>
         <div class="path-container" id="pathContainer"></div>
+    </div>
+
+    <!-- A2 -->
+    <div class="screen" id="scr-a2-screen">
+        <div style="padding:20px 0"><h2 style="font-size:22px;font-weight:700">&#x1F1E9;&#x1F1EA; A2</h2><p style="font-size:13px;color:var(--ts);margin-top:4px">Grundstufe</p></div>
+        <div id="a2Content"></div>
+    </div>
+
+    <!-- B1 -->
+    <div class="screen" id="scr-b1-screen">
+        <div style="padding:20px 0"><h2 style="font-size:22px;font-weight:700">&#x1F1E9;&#x1F1EA; B1</h2><p style="font-size:13px;color:var(--ts);margin-top:4px">Mittelstufe</p></div>
+        <div id="b1Content"></div>
     </div>
 
     <!-- CHAPTER -->
     <div class="screen" id="scr-chapter">
-        <div class="ch-header">
-            <h2 id="chTitle">Kapitel 3</h2>
-            <p id="chSubtitle">Familie</p>
-            <div class="ch-prog"><div class="progress-bar"><div class="progress-fill blue" style="width:65%"></div></div><div class="progress-text">65%</div></div>
-        </div>
+        <div style="padding:20px 0"><h2 id="chTitle" style="font-size:22px;font-weight:700"></h2><p id="chSubtitle" style="font-size:13px;color:var(--ts);margin-top:4px"></p></div>
         <div class="mode-grid">
-            <div class="mode-item" onclick="openMode('vocab')">
-                <div class="mi-icon">&#x1F4D6;</div>
-                <div class="mi-title">Wörter</div>
-                <div class="mi-count" id="chVocabCount">157 words</div>
-                <div class="mi-check"><i class="fas fa-check-circle"></i></div>
-            </div>
-            <div class="mode-item" onclick="openMode('satz')">
-                <div class="mi-icon">&#x1F4AC;</div>
-                <div class="mi-title">Sätze</div>
-                <div class="mi-count">Phrases</div>
-            </div>
-            <div class="mode-item" onclick="openMode('grammar')">
-                <div class="mi-icon">&#x1F9E0;</div>
-                <div class="mi-title">Grammatik</div>
-                <div class="mi-count">Rules</div>
-                <div class="mi-check"><i class="fas fa-check-circle"></i></div>
-            </div>
-            <div class="mode-item" onclick="openMode('speak')">
-                <div class="mi-icon">&#x1F5E3;</div>
-                <div class="mi-title">Sprechen</div>
-                <div class="mi-count">Dialogues</div>
-            </div>
-            <div class="mode-item" onclick="openMode('listen')">
-                <div class="mi-icon">&#x1F3A7;</div>
-                <div class="mi-title">Hören</div>
-                <div class="mi-count">Listening</div>
-            </div>
-            <div class="mode-item" onclick="openMode('write')">
-                <div class="mi-icon">&#x270D;</div>
-                <div class="mi-title">Schreiben</div>
-                <div class="mi-count">Writing</div>
-            </div>
+            <div class="mode-item" onclick="openMode('vocab')"><div class="mi-icon">&#x1F4D6;</div><div class="mi-title">Wörter</div><div class="mi-count" id="chVocabCount"></div></div>
+            <div class="mode-item" onclick="openMode('satz')"><div class="mi-icon">&#x1F4AC;</div><div class="mi-title">Sätze</div><div class="mi-count">341 Phrases</div></div>
+            <div class="mode-item" onclick="openMode('grammar')"><div class="mi-icon">&#x1F9E0;</div><div class="mi-title">Grammatik</div><div class="mi-count">20 Lessons</div></div>
+            <div class="mode-item" onclick="openMode('speak')"><div class="mi-icon">&#x1F5E3;</div><div class="mi-title">Sprechen</div><div class="mi-count">30 Dialogues</div></div>
+            <div class="mode-item" onclick="openMode('listen')"><div class="mi-icon">&#x1F3A7;</div><div class="mi-title">Hören</div><div class="mi-count">Audio Tests</div></div>
+            <div class="mode-item" onclick="openMode('write')"><div class="mi-icon">&#x270D;</div><div class="mi-title">Schreiben</div><div class="mi-count">55 Exercises</div></div>
         </div>
-        <button class="btn btn-outline btn-full" onclick="showScreen('a1-path')"><i class="fas fa-arrow-left"></i> Back to Path</button>
+        <button class="btn btn-outline btn-full" onclick="showScreen('a1-path')"><i class="fas fa-arrow-left"></i> Back</button>
     </div>
 
-    <!-- VOCAB FLASHCARD -->
-    <div class="screen" id="scr-vocab">
-        <div id="vocabContent"></div>
-    </div>
-
+    <!-- VOCAB -->
+    <div class="screen" id="scr-vocab"><div id="vocabContent"></div></div>
     <!-- SENTENCES -->
-    <div class="screen" id="scr-satz">
-        <div id="satzContent"></div>
-    </div>
-
+    <div class="screen" id="scr-satz"><div id="satzContent"></div></div>
     <!-- GRAMMAR -->
-    <div class="screen" id="scr-grammar">
-        <div id="grammarContent"></div>
-    </div>
-
+    <div class="screen" id="scr-grammar"><div id="grammarContent"></div></div>
     <!-- SPEAKING -->
-    <div class="screen" id="scr-speak">
-        <div id="speakContent"></div>
-    </div>
-
+    <div class="screen" id="scr-speak"><div id="speakContent"></div></div>
     <!-- LISTENING -->
-    <div class="screen" id="scr-listen">
-        <div id="listenContent"></div>
-    </div>
-
+    <div class="screen" id="scr-listen"><div id="listenContent"></div></div>
     <!-- WRITING -->
-    <div class="screen" id="scr-write">
-        <div id="writeContent"></div>
-    </div>
-
+    <div class="screen" id="scr-write"><div id="writeContent"></div></div>
     <!-- DAILY WORD -->
-    <div class="screen" id="scr-daily">
-        <div id="dailyContent"></div>
-    </div>
-
+    <div class="screen" id="scr-daily"><div id="dailyContent"></div></div>
     <!-- PROFILE -->
     <div class="screen" id="scr-profile">
         <div class="profile-header">
             <div class="profile-avatar">L</div>
             <div class="profile-name">Learner</div>
-            <div class="profile-level">Deutsch A1 &bull; Kapitel 3</div>
-        </div>
-        <div class="stats-row">
-            <div class="stat-card fire"><div class="val">&#x1F525; 7</div><div class="lbl">Streak</div></div>
-            <div class="stat-card"><div class="val">1,240</div><div class="lbl">XP</div></div>
         </div>
         <div class="profile-stats">
-            <div class="ps-item"><div class="ps-val">1,248</div><div class="ps-lbl">&#x1F4DA; Wörter</div></div>
-            <div class="ps-item"><div class="ps-val">73</div><div class="ps-lbl">&#x1F5E3; Sprechen</div></div>
-            <div class="ps-item"><div class="ps-val">42</div><div class="ps-lbl">&#x1F3A7; Hören</div></div>
-            <div class="ps-item"><div class="ps-val">31</div><div class="ps-lbl">&#x270D; Schreiben</div></div>
-        </div>
-        <div class="section-title">My weak areas</div>
-        <div class="weak-section">
-            <div class="weak-item"><div class="wi-icon" style="background:#fee2e2;color:var(--red)"><i class="fas fa-exclamation"></i></div><div class="wi-info"><div class="wi-title">Akkusativ</div><div class="wi-status warn">Needs practice</div></div></div>
-            <div class="weak-item"><div class="wi-icon" style="background:#fee2e2;color:var(--red)"><i class="fas fa-exclamation"></i></div><div class="wi-info"><div class="wi-title">Trennbare Verben</div><div class="wi-status warn">Needs practice</div></div></div>
-            <div class="weak-item"><div class="wi-icon" style="background:#d1fae5;color:var(--green)"><i class="fas fa-check"></i></div><div class="wi-info"><div class="wi-title">Präsens</div><div class="wi-status ok">Well done</div></div></div>
-            <div class="weak-item"><div class="wi-icon" style="background:#d1fae5;color:var(--green)"><i class="fas fa-check"></i></div><div class="wi-info"><div class="wi-title">Begrüßungen</div><div class="wi-status ok">Well done</div></div></div>
+            <div class="ps-item"><div class="ps-val">1,963</div><div class="ps-lbl">A1 Wörter</div></div>
+            <div class="ps-item"><div class="ps-val">161</div><div class="ps-lbl">Verben</div></div>
+            <div class="ps-item"><div class="ps-val">30</div><div class="ps-lbl">Dialogues</div></div>
+            <div class="ps-item"><div class="ps-val">20</div><div class="ps-lbl">Grammar</div></div>
         </div>
     </div>
-
-    <!-- PRUEFUNG -->
-    <div class="screen" id="scr-pruefung">
-        <div style="padding:20px 0"><h2 style="font-size:22px;font-weight:700">&#x1F3AF; Prüfung</h2><p style="font-size:13px;color:var(--ts);margin-top:4px">Goethe A1 Exam Preparation</p></div>
-        <div class="pruefung-card">
-            <div class="pruefung-item" onclick="openMode('listen')">
-                <div class="pi-icon" style="background:#dbeafe;color:var(--blue)"><i class="fas fa-headphones"></i></div>
-                <div class="pi-info"><div class="pi-title">&#x1F3A7; Hören</div><div class="pi-prog"><div class="progress-bar"><div class="progress-fill blue" style="width:80%"></div></div></div></div>
-            </div>
-            <div class="pruefung-item">
-                <div class="pi-icon" style="background:#d1fae5;color:var(--green)"><i class="fas fa-book-open"></i></div>
-                <div class="pi-info"><div class="pi-title">&#x1F4D6; Lesen</div><div class="pi-prog"><div class="progress-bar"><div class="progress-fill green" style="width:60%"></div></div></div></div>
-            </div>
-            <div class="pruefung-item" onclick="openMode('write')">
-                <div class="pi-icon" style="background:#fef3c7;color:#d97706"><i class="fas fa-pen-fancy"></i></div>
-                <div class="pi-info"><div class="pi-title">&#x270D; Schreiben</div><div class="pi-prog"><div class="progress-bar"><div class="progress-fill yellow" style="width:50%"></div></div></div></div>
-            </div>
-            <div class="pruefung-item" onclick="openMode('speak')">
-                <div class="pi-icon" style="background:#ede9fe;color:#7c3aed"><i class="fas fa-microphone"></i></div>
-                <div class="pi-info"><div class="pi-title">&#x1F5E3; Sprechen</div><div class="pi-prog"><div class="progress-bar"><div class="progress-fill blue" style="width:70%"></div></div></div></div>
-            </div>
-        </div>
-        <button class="btn btn-primary btn-full" style="margin-top:12px"><i class="fas fa-play"></i> A1 Mock Test starten</button>
-    </div>
-
 </div>
 
-<!-- ===== BOTTOM NAV ===== -->
 <div class="bottom-nav">
     <div class="nav-item active" data-scr="home" onclick="navTo('home')"><i class="fas fa-home"></i><span>Home</span></div>
-    <div class="nav-item" data-scr="lernen" onclick="navTo('lernen')"><i class="fas fa-book"></i><span>Lernen</span></div>
-    <div class="nav-item" data-scr="pruefung" onclick="navTo('pruefung')"><i class="fas fa-bullseye"></i><span>Prüfung</span></div>
     <div class="nav-item" data-scr="daily" onclick="navTo('daily')"><i class="fas fa-calendar-day"></i><span>Heute</span></div>
     <div class="nav-item" data-scr="profile" onclick="navTo('profile')"><i class="fas fa-user"></i><span>Profil</span></div>
 </div>
@@ -546,74 +185,55 @@
 <div class="toast" id="toast"></div>
 
 <script>
-let D=null, currentKapitel=1, vocabIndex=0, vocabWords=[];
+let D=null,currentKapitel=1,vocabIndex=0,vocabWords=[];
 
 async function init(){
     try{const r=await fetch('data.json');D=await r.json();}catch(e){D={};}
-    renderPath();
-    renderDaily();
+    renderPath();renderDaily();
 }
 
 function A1(){return D?.['A1 Vucabullary']||{}}
+function A2(){return D?.['A2 Vocabullary']||{}}
+function B1(){return D?.['B1 Vucabullary']||{}}
 function esc(s){if(s===null||s===undefined)return'';if(typeof s!=='string')s=JSON.stringify(s);return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
-// ===== NAVIGATION =====
-function showScreen(id){
-    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-    const s=document.getElementById('scr-'+id);
-    if(s)s.classList.add('active');
-    window.scrollTo(0,0);
-}
-function navTo(id){
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-    document.querySelector(`.nav-item[data-scr="${id}"]`)?.classList.add('active');
-    showScreen(id);
-}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('scr-'+id)?.classList.add('active');window.scrollTo(0,0);}
+function navTo(id){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelector(`.nav-item[data-scr="${id}"]`)?.classList.add('active');showScreen(id);}
 function openSearch(){document.getElementById('searchOverlay').classList.add('show');document.getElementById('searchInput').focus();}
 function closeSearch(){document.getElementById('searchOverlay').classList.remove('show');document.getElementById('searchInput').value='';document.getElementById('searchResults').innerHTML='';}
-function openPruefung(level){showScreen('pruefung');}
+function openPruefung(){showScreen('a1-path');}
 
-// ===== LEARNING PATH =====
+// LEARNING PATH
 function renderPath(){
     const netz=A1()['netzwerk neu a1']||{};
     const topics=['Begrüßungen','Meine Wohnung','Familie','Essen & Trinken','Tagesablauf','Kleidung','Orte in der Stadt','Im Restaurant','Transport','Gesundheit','Freizeit','Einkaufen'];
     const icons=['&#x1F44B;','&#x1F3E0;','&#x1F468;&#x200D;&#x1F469;&#x200D;&#x1F467;','&#x1F35E;','&#x23F0;','&#x1F455;','&#x1F3D8;','&#x1F37D;','&#x1F68C;','&#x1FA7A;','&#x26BD;','&#x1F6D2;'];
     let h='';
     for(let i=1;i<=12;i++){
-        const words=(netz['Kapitel '+i]||[]).filter(x=>x);
-        const done=i<=2;
-        const current=i===3;
-        const locked=i>3;
-        h+=`<div class="path-node ${locked?'locked':''}">
-            <div class="path-connector" style="${i===1?'top:50%;height:calc(100% + 24px)':''}"></div>
-            <div class="path-circle ${done?'green':current?'blue locked':'locked'}" onclick="${locked?'':'openChapter('+i+')'}">
-                ${done?'<i class="fas fa-check"></i>':icons[i-1]||i}
-                ${current?'<div class="check" style="display:flex"><i class="fas fa-play" style="font-size:8px"></i></div>':''}
-            </div>
-            <div class="path-info" onclick="${locked?'':'openChapter('+i+')'}">
-                <h3>Kapitel ${i}</h3>
-                <p>${topics[i-1]||''}</p>
-                <div class="path-prog"><div class="progress-bar" style="height:6px"><div class="progress-fill ${done?'green':current?'blue':''}" style="width:${done?'100':current?'65':'0'}%"></div></div></div>
-            </div>
+        const words=(netz['Kapitel '+i]||[]).filter(x=>x).length;
+        h+=`<div class="path-node" onclick="openChapter(${i})">
+            <div class="path-circle blue">${icons[i-1]||i}</div>
+            <div class="path-info"><h3>Kapitel ${i}</h3><p>${topics[i-1]||''} &bull; ${words} words</p></div>
+            <i class="fas fa-chevron-right" style="color:var(--ts)"></i>
         </div>`;
     }
     document.getElementById('pathContainer').innerHTML=h;
 }
 
-// ===== CHAPTER =====
+// CHAPTER
 function openChapter(num){
     currentKapitel=num;
     const topics=['Begrüßungen','Meine Wohnung','Familie','Essen & Trinken','Tagesablauf','Kleidung','Orte in der Stadt','Im Restaurant','Transport','Gesundheit','Freizeit','Einkaufen'];
     const netz=A1()['netzwerk neu a1']||{};
-    const words=(netz['Kapitel '+num]||[]).filter(x=>x);
+    const words=(netz['Kapitel '+num]||[]).filter(x=>x).length;
     document.getElementById('chTitle').textContent='Kapitel '+num;
     document.getElementById('chSubtitle').textContent=topics[num-1]||'';
-    document.getElementById('chVocabCount').textContent=words.length+' words';
+    document.getElementById('chVocabCount').textContent=words+' words';
     showScreen('chapter');
 }
 
-// ===== MODES =====
+// MODES
 function openMode(mode){
     const netz=A1()['netzwerk neu a1']||{};
     const words=(netz['Kapitel '+currentKapitel]||[]).filter(x=>x);
@@ -622,7 +242,6 @@ function openMode(mode){
     const gs=(A1()['Grammar']||[]).filter(x=>x);
     const horen=A1()['Horen']||{};
     const sch=A1()['Schreiben']||{};
-
     if(mode==='vocab'){vocabWords=words;vocabIndex=0;renderFlashcard();showScreen('vocab');}
     else if(mode==='satz'){renderSentences(ss);showScreen('satz');}
     else if(mode==='grammar'){renderGrammar(gs);showScreen('grammar');}
@@ -631,18 +250,18 @@ function openMode(mode){
     else if(mode==='write'){renderWriting(sch);showScreen('write');}
 }
 
-// ===== FLASHCARD =====
+// FLASHCARD
 function renderFlashcard(){
     if(vocabIndex>=vocabWords.length){
-        document.getElementById('vocabContent').innerHTML=`<div class="flashcard-done fade-in">
-            <div class="big-icon">&#x1F389;</div>
-            <h3>Gut gemacht!</h3>
-            <p>Du hast ${vocabWords.length} Wörter gelernt.</p>
-            <div style="margin:16px 0"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
-            <button class="btn btn-primary" onclick="vocabIndex=0;renderFlashcard()"><i class="fas fa-redo"></i> Wiederholen</button>
-            <button class="btn btn-outline" style="margin-top:8px" onclick="showScreen('chapter')">Zurück</button>
-        </div>`;
-        return;
+        document.getElementById('vocabContent').innerHTML=`<div class="flashcard-area fade-in">
+            <div style="font-size:60px;margin-bottom:16px">&#x1F389;</div>
+            <h3 style="font-size:20px;font-weight:700;margin-bottom:8px">Gut gemacht!</h3>
+            <p style="color:var(--ts)">${vocabWords.length} Wörter gesehen</p>
+            <div style="margin-top:16px;display:flex;gap:10px;justify-content:center">
+                <button class="btn btn-primary" onclick="vocabIndex=0;renderFlashcard()"><i class="fas fa-redo"></i> Nochmal</button>
+                <button class="btn btn-outline" onclick="showScreen('chapter')">Zurück</button>
+            </div>
+        </div>`;return;
     }
     const w=vocabWords[vocabIndex];
     document.getElementById('vocabContent').innerHTML=`<div class="flashcard-area fade-in">
@@ -665,54 +284,30 @@ function renderFlashcard(){
 }
 function vocabNext(){vocabIndex++;renderFlashcard();}
 
-// ===== SENTENCES =====
+// SENTENCES
 function renderSentences(ss){
-    let h='<div class="back-bar"><button class="back-btn" onclick="showScreen(\'chapter\')"><i class="fas fa-arrow-left"></i></button><div class="back-title">Sätze</div></div>';
-    h+=ss.map(s=>`<div class="card" style="margin-bottom:8px;padding:14px 16px">
-        <div style="font-size:14px;font-weight:500;margin-bottom:4px">${esc(s.de||'')}</div>
-        <div style="font-size:13px;color:var(--ts)">${esc(s.bn||'')}</div>
-    </div>`).join('');
+    let h='<div style="padding:20px 0;display:flex;align-items:center;gap:10px"><button class="btn btn-outline btn-sm" onclick="showScreen(\'chapter\')"><i class="fas fa-arrow-left"></i></button><h2 style="font-size:18px;font-weight:700">Sätze</h2></div>';
+    h+=ss.map(s=>`<div class="card" style="margin-bottom:8px;padding:14px 16px"><div style="font-size:14px;font-weight:500;margin-bottom:4px">${esc(s.de||'')}</div><div style="font-size:13px;color:var(--ts)">${esc(s.bn||'')}</div></div>`).join('');
     document.getElementById('satzContent').innerHTML=h;
 }
 
-// ===== GRAMMAR =====
+// GRAMMAR
 function renderGrammar(gs){
-    let h='<div class="back-bar"><button class="back-btn" onclick="showScreen(\'chapter\')"><i class="fas fa-arrow-left"></i></button><div class="back-title">Grammatik</div></div>';
-    h+=gs.map((g,i)=>`<div class="gram-section fade-in">
-        <h3>${i+1}. ${esc(g.title||'')}</h3>
-        <div style="font-size:12px;color:var(--blue);margin-bottom:6px">${esc(g.subtitle||'')}</div>
-        <p>${esc(g.description||'')}</p>
-        ${g.example?`<div class="gram-example"><b>Example:</b> ${esc(g.example)}</div>`:''}
-        ${g.structure?`<div class="gram-example"><b>Structure:</b> ${esc(g.structure)}</div>`:''}
-    </div>`).join('');
+    let h='<div style="padding:20px 0;display:flex;align-items:center;gap:10px"><button class="btn btn-outline btn-sm" onclick="showScreen(\'chapter\')"><i class="fas fa-arrow-left"></i></button><h2 style="font-size:18px;font-weight:700">Grammatik</h2></div>';
+    h+=gs.map((g,i)=>`<div class="gram-section fade-in"><h3>${i+1}. ${esc(g.title||'')}</h3><div style="font-size:12px;color:var(--blue);margin-bottom:6px">${esc(g.subtitle||'')}</div><p>${esc(g.description||'')}</p>${g.example?`<div class="gram-example"><b>Example:</b> ${esc(g.example)}</div>`:''}${g.structure?`<div class="gram-example"><b>Structure:</b> ${esc(g.structure)}</div>`:''}</div>`).join('');
     document.getElementById('grammarContent').innerHTML=h;
 }
 
-// ===== SPEAKING =====
+// SPEAKING
 function renderSpeaking(ds){
-    let h='<div class="back-bar"><button class="back-btn" onclick="showScreen(\'chapter\')"><i class="fas fa-arrow-left"></i></button><div class="back-title">Sprechen</div></div>';
-    h+=ds.map((d,i)=>`<div class="card" style="margin-bottom:12px;overflow:visible">
-        <div style="padding:14px 16px;font-weight:600;font-size:14px;color:var(--blue);border-bottom:1px solid var(--b)">${i+1}. ${esc(d.title||'')}</div>
-        <div class="chat-area" style="padding:16px">
-            ${(d.content||'').split('\n').map(line=>{
-                if(!line.trim())return'';
-                const isTeacher=/^[A-Z][^a-z]*:/.test(line)||line.startsWith('A:');
-                const isUser=/^B:/.test(line);
-                if(!isTeacher&&!isUser)return`<div style="font-size:13px;color:var(--ts);padding:4px 0">${esc(line)}</div>`;
-                const clean=line.replace(/^[AB]:\s*/,'');
-                return`<div class="chat-msg ${isTeacher?'teacher':'user'}">
-                    <div class="chat-avatar ${isTeacher?'t':'u'}">${isTeacher?'&#x1F468;&#x200D;&#x1F3EB;':'&#x1F466;'}</div>
-                    <div class="chat-bubble">${esc(clean)}</div>
-                </div>`;
-            }).join('')}
-        </div>
-    </div>`).join('');
+    let h='<div style="padding:20px 0;display:flex;align-items:center;gap:10px"><button class="btn btn-outline btn-sm" onclick="showScreen(\'chapter\')"><i class="fas fa-arrow-left"></i></button><h2 style="font-size:18px;font-weight:700">Sprechen</h2></div>';
+    h+=ds.map((d,i)=>`<div class="card" style="margin-bottom:12px;overflow:visible"><div style="padding:14px 16px;font-weight:600;font-size:14px;color:var(--blue);border-bottom:1px solid var(--b)">${i+1}. ${esc(d.title||'')}</div><div style="padding:16px">${(d.content||'').split('\n').map(line=>{if(!line.trim())return'';const isT=/^[A-Z][^a-z]*:/.test(line)||line.startsWith('A:');const isU=/^B:/.test(line);if(!isT&&!isU)return`<div style="font-size:13px;color:var(--ts);padding:4px 0">${esc(line)}</div>`;const clean=line.replace(/^[AB]:\s*/,'');return`<div class="chat-msg ${isT?'teacher':'user'}"><div class="chat-avatar ${isT?'t':'u'}">${isT?'&#x1F468;&#x200D;&#x1F3EB;':'&#x1F466;'}</div><div class="chat-bubble">${esc(clean)}</div></div>`;}).join('')}</div></div>`).join('');
     document.getElementById('speakContent').innerHTML=h;
 }
 
-// ===== LISTENING =====
+// LISTENING
 function renderListening(horen){
-    let h='<div class="back-bar"><button class="back-btn" onclick="showScreen(\'chapter\')"><i class="fas fa-arrow-left"></i></button><div class="back-title">Hören</div></div>';
+    let h='<div style="padding:20px 0;display:flex;align-items:center;gap:10px"><button class="btn btn-outline btn-sm" onclick="showScreen(\'chapter\')"><i class="fas fa-arrow-left"></i></button><h2 style="font-size:18px;font-weight:700">Hören</h2></div>';
     Object.entries(horen).forEach(([teil,tests])=>{
         if(typeof tests!=='object'||!tests)return;
         const entries=Object.entries(tests).filter(([k,v])=>v&&typeof v==='object');
@@ -722,24 +317,18 @@ function renderListening(horen){
             let q='';const qs=test.questions||{};
             Object.entries(qs).forEach(([qk,qi])=>{
                 q+=`<div style="margin-bottom:12px"><div style="font-size:13px;font-weight:500;margin-bottom:6px">${qi.questionText||qk}</div>`;
-                if(qi.options)qi.options.forEach(opt=>{
-                    q+=`<div class="hoeren-opt" onclick="this.classList.toggle('selected')"><div class="radio"></div><div class="opt-text">${esc(opt)}</div></div>`;
-                });
-                q+=`<div class="t-a" style="margin-top:4px">Answer: ${qi.answer||''}</div></div>`;
+                if(qi.options)qi.options.forEach(opt=>{q+=`<div class="hoeren-opt" onclick="this.classList.toggle('selected')"><div class="radio"></div><div style="font-size:14px">${esc(opt)}</div></div>`;});
+                q+=`<div style="color:var(--green);font-size:11px;font-weight:600;margin-top:4px">Answer: ${qi.answer||''}</div></div>`;
             });
-            h+=`<div class="card" style="margin-bottom:12px;padding:16px">
-                <div style="font-weight:600;font-size:13px;margin-bottom:8px">${test.name||tk}</div>
-                ${test.audioUrl?`<div class="hoeren-player"><div class="hoeren-visual pulse"><i class="fas fa-play"></i></div><a href="${test.audioUrl}" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> Audio anhören</a></div>`:''}
-                ${q}
-            </div>`;
+            h+=`<div class="card" style="margin-bottom:12px;padding:16px"><div style="font-weight:600;font-size:13px;margin-bottom:8px">${test.name||tk}</div>${test.audioUrl?`<div class="hoeren-player"><div class="hoeren-visual"><i class="fas fa-play"></i></div><a href="${test.audioUrl}" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> Audio</a></div>`:''}${q}</div>`;
         });
     });
-    document.getElementById('listenContent').innerHTML=h||'<div class="empty">No listening data</div>';
+    document.getElementById('listenContent').innerHTML=h||'<div style="padding:20px;text-align:center;color:var(--ts)">No data</div>';
 }
 
-// ===== WRITING =====
+// WRITING
 function renderWriting(sch){
-    let h='<div class="back-bar"><button class="back-btn" onclick="showScreen(\'chapter\')"><i class="fas fa-arrow-left"></i></button><div class="back-title">Schreiben</div></div>';
+    let h='<div style="padding:20px 0;display:flex;align-items:center;gap:10px"><button class="btn btn-outline btn-sm" onclick="showScreen(\'chapter\')"><i class="fas fa-arrow-left"></i></button><h2 style="font-size:18px;font-weight:700">Schreiben</h2></div>';
     Object.entries(sch).forEach(([teil,exs])=>{
         if(typeof exs!=='object'||!exs)return;
         const entries=Object.entries(exs).sort((a,b)=>a[0].localeCompare(b[0],undefined,{numeric:true}));
@@ -747,62 +336,59 @@ function renderWriting(sch){
         h+=`<div style="font-weight:600;font-size:14px;margin:16px 0 8px">${teil}</div>`;
         entries.slice(0,5).forEach(([mk,ex])=>{
             if(!ex)return;
-            h+=`<div class="schreiben-area"><div class="sch-prompt">
-                <h3>${mk}</h3>
-                <p>${esc(ex.Topic||ex.topic||'')}</p>
-            </div>
-            <textarea class="sch-textarea" placeholder="Schreibe hier..." oninput="this.nextElementSibling.textContent=this.value.split(' ').filter(w=>w).length+' Wörter'"></textarea>
-            <div class="sch-counter">0 Wörter</div>
-            <div class="sch-checklist">
-                <div class="sch-check pending"><i class="far fa-circle"></i> Aufgabe verstanden</div>
-                <div class="sch-check pending"><i class="far fa-circle"></i> Begrüßung</div>
-                <div class="sch-check pending"><i class="far fa-circle"></i> Inhalt</div>
-            </div>
-            <button class="btn btn-primary btn-sm btn-full" onclick="toast('Antwort gespeichert!')"><i class="fas fa-check"></i> Antwort prüfen</button>
-            </div>`;
+            h+=`<div style="margin-bottom:16px"><div class="sch-prompt"><h3>${mk}</h3><p>${esc(ex.Topic||ex.topic||'')}</p></div><textarea class="sch-textarea" placeholder="Schreibe hier..." oninput="this.nextElementSibling.textContent=this.value.split(' ').filter(w=>w).length+' Wörter'"></textarea><div class="sch-counter">0 Wörter</div><button class="btn btn-primary btn-sm btn-full" style="margin-top:8px" onclick="toast('Gespeichert!')"><i class="fas fa-check"></i> Fertig</button></div>`;
         });
     });
-    document.getElementById('writeContent').innerHTML=h||'<div class="empty">No writing data</div>';
+    document.getElementById('writeContent').innerHTML=h||'<div style="padding:20px;text-align:center;color:var(--ts)">No data</div>';
 }
 
-// ===== DAILY WORD =====
+// DAILY WORD
 function renderDaily(){
     const tw=D?.TodayWord||{};
     const dates=Object.keys(tw).sort((a,b)=>{const[d1,m1,y1]=a.split('-').map(Number);const[d2,m2,y2]=b.split('-').map(Number);return(y2*10000+m2*100+d2)-(y1*10000+m1*100+d1);});
     const today=dates[0];
     const words=tw[today]||[];
-    if(!words.length){document.getElementById('dailyContent').innerHTML='<div class="empty">No daily words</div>';return;}
+    if(!words.length){document.getElementById('dailyContent').innerHTML='<div style="padding:20px;text-align:center;color:var(--ts)">No daily words</div>';return;}
     let idx=0;
     function renderWord(){
-        if(idx>=words.length){
-            document.getElementById('dailyContent').innerHTML=`<div class="flashcard-done fade-in">
-                <div class="big-icon">&#x1F31F;</div>
-                <h3>Heute geschafft!</h3>
-                <p>${words.length} Wörter gelernt.</p>
-                <div style="margin:16px 0"><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
-                <p style="font-size:13px;color:var(--ts)">&#x1F525; Come back tomorrow!</p>
-            </div>`;
-            return;
-        }
+        if(idx>=words.length){document.getElementById('dailyContent').innerHTML=`<div class="flashcard-area fade-in"><div style="font-size:60px;margin-bottom:16px">&#x1F31F;</div><h3 style="font-size:20px;font-weight:700;margin-bottom:8px">Fertig!</h3><p style="color:var(--ts)">${words.length} Wörter gesehen</p></div>`;return;}
         const w=words[idx];
-        document.getElementById('dailyContent').innerHTML=`<div class="daily-card fade-in">
-            <div class="daily-num">${idx+1} / ${words.length}</div>
-            <div class="daily-word">${esc(w.wort||'')}</div>
-            <div class="daily-bn">${esc(w.details||'').split('\n')[0]||''}</div>
-            <div class="daily-example">
-                <div class="de">${esc(w.details||'').split('\n')[1]||''}</div>
-            </div>
-            <div class="daily-progress"><div class="progress-bar"><div class="progress-fill blue" style="width:${((idx+1)/words.length)*100}%"></div></div></div>
-            <div class="daily-nav">
-                <button class="btn btn-outline btn-sm" onclick="if(idx>0){idx--;renderWord();}"><i class="fas fa-arrow-left"></i></button>
-                <button class="btn btn-primary btn-sm" onclick="idx++;renderWord();">Nächstes <i class="fas fa-arrow-right"></i></button>
-            </div>
-        </div>`;
+        document.getElementById('dailyContent').innerHTML=`<div class="daily-card fade-in"><div class="daily-num">${idx+1} / ${words.length}</div><div class="daily-word">${esc(w.wort||'')}</div><div class="daily-bn">${esc(w.details||'').split('\\n')[0]||''}</div><div class="daily-example"><div style="font-size:13px;color:#475569;white-space:pre-line">${esc(w.details||'')}</div></div><div class="daily-nav"><button class="btn btn-outline btn-sm" onclick="if(idx>0){idx--;renderWord();}"><i class="fas fa-arrow-left"></i></button><button class="btn btn-primary btn-sm" onclick="idx++;renderWord();">Nächstes <i class="fas fa-arrow-right"></i></button></div></div>`;
     }
     renderWord();
 }
 
-// ===== SEARCH =====
+// A2
+function renderA2(){
+    const a2=A2();const netz=a2['netzwerk neu a2']||{};
+    const keys=Object.keys(netz).sort((a,b)=>parseInt(a.split(' '))-parseInt(b.split(' ')));
+    let h='';
+    keys.forEach(k=>{
+        const words=(netz[k]||[]).filter(x=>x);
+        h+=`<div class="card" style="margin-bottom:10px;padding:16px"><div style="font-weight:700;font-size:15px;margin-bottom:8px">${k} (${words.length})</div>`;
+        words.slice(0,20).forEach(w=>{h+=`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--b);font-size:13px"><span style="font-weight:500">${esc(w.deutsch||'')}</span><span style="color:var(--ts)">${esc(w.english||'')}</span><span style="color:var(--blue)">${esc(w.bangla||'')}</span></div>`;});
+        if(words.length>20)h+=`<div style="font-size:12px;color:var(--ts);margin-top:8px;text-align:center">+${words.length-20} more</div>`;
+        h+='</div>';
+    });
+    document.getElementById('a2Content').innerHTML=h||'<div style="padding:20px;text-align:center;color:var(--ts)">No A2 data</div>';
+}
+
+// B1
+function renderB1(){
+    const b1=B1();let h='';
+    const netz=b1['netzwerk neu b1']||{};const keys=Object.keys(netz).sort();
+    keys.forEach(k=>{
+        const words=(netz[k]||[]).filter(x=>x);
+        h+=`<div class="card" style="margin-bottom:10px;padding:16px"><div style="font-weight:700;font-size:15px;margin-bottom:8px">${k} (${words.length})</div>`;
+        words.slice(0,20).forEach(w=>{h+=`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--b);font-size:13px"><span style="font-weight:500">${esc(w.deutsch||'')}</span><span style="color:var(--ts)">${esc(w.english||'')}</span><span style="color:var(--blue)">${esc(w.bangla||'')}</span></div>`;});
+        h+='</div>';
+    });
+    const rw=(b1['Regular Wort']||[]).filter(x=>x);
+    if(rw.length)h+=`<div class="card" style="margin-bottom:10px;padding:16px"><div style="font-weight:700;font-size:15px;margin-bottom:8px">Regular Wort (${rw.length})</div>${rw.slice(0,20).map(w=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--b);font-size:13px"><span style="font-weight:500">${esc(w.deutsch||'')}</span><span style="color:var(--ts)">${esc(w.english||'')}</span><span style="color:var(--blue)">${esc(w.bangla||'')}</span></div>`).join('')}</div>`;
+    document.getElementById('b1Content').innerHTML=h||'<div style="padding:20px;text-align:center;color:var(--ts)">No B1 data</div>';
+}
+
+// SEARCH
 function doSearch(q){
     const res=document.getElementById('searchResults');
     if(!q||q.length<2){res.innerHTML='';return;}
@@ -825,7 +411,9 @@ function doSearch(q){
     res.innerHTML=results.length?results.map(r=>`<div class="sr-item"><span class="sr-badge" style="background:${r.color}">${r.type}</span><div class="sr-title">${esc(r.title)}</div><div class="sr-sub">${esc(r.sub)}</div></div>`).join(''):'<div style="padding:20px;text-align:center;color:var(--ts)">Keine Ergebnisse</div>';
 }
 
-init();
+// INIT
+document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>{document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));n.classList.add('active');}));
+init();renderA2();renderB1();
 </script>
 </body>
 </html>
