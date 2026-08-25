@@ -185,7 +185,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-let D=null,currentKapitel=1,vocabIndex=0,vocabWords=[];
+let D=null,currentKapitel=1,vocabIndex=0,vocabWords=[],dailyIdx=0;
 
 async function init(){
     try{const r=await fetch('data.json');D=await r.json();}catch(e){D={};}
@@ -333,11 +333,11 @@ function renderDaily(){
     const today=dates[0];
     const words=tw[today]||[];
     if(!words.length){document.getElementById('dailyContent').innerHTML='<div style="padding:20px;text-align:center;color:var(--ts)">No daily words</div>';return;}
-    let idx=0;
+    dailyIdx=0;
     function renderWord(){
-        if(idx>=words.length){document.getElementById('dailyContent').innerHTML=`<div class="flashcard-area fade-in"><div style="font-size:60px;margin-bottom:16px">&#x1F31F;</div><h3 style="font-size:20px;font-weight:700;margin-bottom:8px">Fertig!</h3><p style="color:var(--ts)">${words.length} Wörter gesehen</p></div>`;return;}
-        const w=words[idx];
-        document.getElementById('dailyContent').innerHTML=`<div class="daily-card fade-in"><div class="daily-num">${idx+1} / ${words.length}</div><div class="daily-word">${esc(w.wort||'')}</div><div class="daily-bn">${esc(w.details||'').split('\\n')[0]||''}</div><div class="daily-example"><div style="font-size:13px;color:#475569;white-space:pre-line">${esc(w.details||'')}</div></div><div class="daily-nav"><button class="btn btn-outline btn-sm" onclick="if(idx>0){idx--;renderWord();}"><i class="fas fa-arrow-left"></i></button><button class="btn btn-primary btn-sm" onclick="idx++;renderWord();">Nächstes <i class="fas fa-arrow-right"></i></button></div></div>`;
+        if(dailyIdx>=words.length){document.getElementById('dailyContent').innerHTML=`<div class="flashcard-area fade-in"><div style="font-size:60px;margin-bottom:16px">&#x1F31F;</div><h3 style="font-size:20px;font-weight:700;margin-bottom:8px">Fertig!</h3><p style="color:var(--ts)">${words.length} Wörter gesehen</p></div>`;return;}
+        const w=words[dailyIdx];
+        document.getElementById('dailyContent').innerHTML=`<div class="daily-card fade-in"><div class="daily-num">${dailyIdx+1} / ${words.length}</div><div class="daily-word">${esc(w.wort||'')}</div><div class="daily-bn">${esc(w.details||'').split('\\n')[0]||''}</div><div class="daily-example"><div style="font-size:13px;color:#475569;white-space:pre-line">${esc(w.details||'')}</div></div><div class="daily-nav"><button class="btn btn-outline btn-sm" onclick="if(dailyIdx>0){dailyIdx--;renderWord();}"><i class="fas fa-arrow-left"></i></button><button class="btn btn-primary btn-sm" onclick="dailyIdx++;renderWord();">Nächstes <i class="fas fa-arrow-right"></i></button></div></div>`;
     }
     renderWord();
 }
