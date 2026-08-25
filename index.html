@@ -185,7 +185,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-let D=null,currentKapitel=1,vocabIndex=0,vocabWords=[],dailyIdx=0,dailyWords=[];
+let D=null,currentKapitel=1,vocabIndex=0,vocabWords=[],dailyIdx=0;
 
 async function init(){
     try{const r=await fetch('data.json');D=await r.json();}catch(e){D={};}
