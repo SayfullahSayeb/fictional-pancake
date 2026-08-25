@@ -548,7 +548,7 @@
 <script>
 let D=null, currentKapitel=1, vocabIndex=0, vocabWords=[];
 
-function init(){
+async function init(){
     try{const r=await fetch('data.json');D=await r.json();}catch(e){D={};}
     renderPath();
     renderDaily();
@@ -572,6 +572,7 @@ function navTo(id){
 }
 function openSearch(){document.getElementById('searchOverlay').classList.add('show');document.getElementById('searchInput').focus();}
 function closeSearch(){document.getElementById('searchOverlay').classList.remove('show');document.getElementById('searchInput').value='';document.getElementById('searchResults').innerHTML='';}
+function openPruefung(level){showScreen('pruefung');}
 
 // ===== LEARNING PATH =====
 function renderPath(){
